@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Details</title>
+    <title id="title">Movie Details</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -30,6 +30,7 @@
             const movie = JSON.parse(localStorage.getItem("selectedMovie"));
             if (movie) {
                 document.getElementById("movie-title").textContent = movie.title;
+                document.getElementById("title").textContent = `${movie.title} (${movie.year}) - FrameFlix`;
                 document.getElementById("movie-description").textContent = movie.description;
                 document.getElementById("movie-year").textContent = movie.year;
                 document.getElementById("movie-rating").textContent = movie.rating;
