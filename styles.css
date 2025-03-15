@@ -305,6 +305,8 @@ button:hover {
   #right-side {
     margin: 1rem;
     gap: 10px;
+    display: flex;
+    flex-direction: column;
   }
   .movie-details {
     flex-direction: column;
