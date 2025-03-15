@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendations</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>FrameFlix</h1>
+        <input type="text" id="search" placeholder="Search movies...">
+    </header>
+    
+    <nav>
+        <button class="filter" data-genre="all">All</button>
+        <button class="filter" data-genre="action">Action</button>
+        <button class="filter" data-genre="comedy">Comedy</button>
+        <button class="filter" data-genre="sci-fi">Sci-Fi</button>
+    </nav>
+    
+    <main id="movies">
+        <!-- Movie items will be dynamically added here -->
+    </main>
+    
+    <script src="script.js"></script>
+</body>
+</html>

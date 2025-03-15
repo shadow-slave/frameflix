@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Movie Recommendation System</h1>
+    </header>
+    
+    <section class="form-section">
+        <!-- <h2>Choose a Genre</h2> -->
+        <form id="movie-form">
+            <label for="genre">Select a Genre:</label>
+            <select id="genre" name="genre">
+                <option value="action">Action</option>
+                <option value="comedy">Comedy</option>
+                <option value="drama">Drama</option>
+                <option value="horror">Horror</option>
+                <option value="romance">Romance</option>
+            </select>
+            <button type="submit">Get Recommendations</button>
+        </form>
+    </section>
+
+    <section class="recommendations">
+        <h2>Recommendations:</h2>
+        <div id="movie-list" class="movie-list">
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Movie Recs, Inc.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

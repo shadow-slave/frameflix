@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Details</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav id="movie-details-nav">
+        <h1>FrameFlix</h1>
+        <a href="index.html" class="back-btn">Back to Home</a>
+    </nav>
+    <div class="movie-details">
+        <h1 id="movie-title"></h1>
+        <div class="movie-posters">
+            <img id="movie-poster" src="" alt="Movie Poster">
+            <iframe id="movie-trailer" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="details-content">
+            <p id="movie-description"></p>
+            <p><strong>Year:</strong> <span id="movie-year"></span></p>
+            <p><strong>Rating:</strong> ⭐ <span id="movie-rating"></span></p>
+            <br>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const movie = JSON.parse(localStorage.getItem("selectedMovie"));
+            if (movie) {
+                document.getElementById("movie-title").textContent = movie.title;
+                document.getElementById("movie-description").textContent = movie.description;
+                document.getElementById("movie-year").textContent = movie.year;
+                document.getElementById("movie-rating").textContent = movie.rating;
+                document.getElementById("movie-poster").src = movie.poster;
+                document.getElementById("movie-trailer").src = movie.trailer + "?autoplay=1&mute=1";
+            }
+        });
+    </script>
+</body>
+</html>
