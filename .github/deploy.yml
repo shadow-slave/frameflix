@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - main  # Change if using a different branch
 
 jobs:
   deploy:
@@ -12,17 +12,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Replace API key in script.js
+      - name: Inject API Key
         run: |
-          sed -i "s/YOUR_API_KEY_PLACEHOLDER/${{ secrets.TMDB_API_KEY }}/g" script.js
+          sed -i 's|PLACEHOLDER_API_KEY|${{ secrets.TMDB_API_KEY }}|' config.js
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          branch: gh-pages
+          folder: .
