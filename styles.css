@@ -53,7 +53,7 @@ h1 {
   margin: 0;
 }
 
-#toprated-link{
+#toprated-link {
   padding: 5px 15px;
   border-radius: 5px;
 }
@@ -69,7 +69,6 @@ h1 {
 nav {
   margin: 20px 0;
 }
-
 
 .filter {
   padding: 10px 20px;
@@ -102,12 +101,14 @@ nav {
   text-align: center;
   box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
   transition: transform 0.3s;
+  cursor: pointer;
 }
 
 .movie:hover {
   transform: translateY(-1px) !important;
   background-color: rgb(46, 46, 46);
 }
+
 img {
   width: 100%;
   max-width: 300px;
@@ -267,20 +268,20 @@ button:hover {
 }
 
 .review {
-    background: #222;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 10px;
+  background: #222;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 .review h4 {
-    margin: 0;
-    color: #f5c518;
+  margin: 0;
+  color: #f5c518;
 }
 
 .review p {
-    font-size: 14px;
-    line-height: 1.5;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 /* responsiveness */
@@ -308,6 +309,7 @@ button:hover {
     display: flex;
     flex-direction: column;
   }
+
   .movie-details {
     flex-direction: column;
     text-align: center;
