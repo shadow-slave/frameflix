@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("search");
   const filterButtons = document.querySelectorAll(".filter");
 
-  const API_KEY = process.env.TMDB_API_KEY;
+  const API_KEY = "YOUR_API_KEY_PLACEHOLDER"; // Placeholder for the API key
 
   const BASE_URL = "https://api.themoviedb.org/3";
   const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"; // Movie poster base URL
