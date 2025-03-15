@@ -1,26 +1,16 @@
-name: Deploy to GitHub Pages
+name: Debug API Key Replacement
 
 on:
   push:
     branches:
-      - main  # Change this if you're using a different branch
+      - main  # Adjust this if needed
 
 jobs:
-  deploy:
+  debug:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Inject API Key into config.js
-        run: |
-          echo "const API_KEY = '${{ secrets.TMDB_API_KEY }}';" > config.js
-
-      - name: Verify API Key Replacement
-        run: cat config.js  # Debugging: Check if replacement worked
-
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages
-          folder: .
+      - name: Print API Key (Debugging)
+        run: echo "API Key is: ${{ secrets.TMDB_API_KEY }}"
