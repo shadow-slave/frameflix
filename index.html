@@ -9,21 +9,50 @@
 </head>
 <body>
     <header>
-        <h1>FrameFlix</h1>
-        <input type="text" id="search" placeholder="Search movies...">
+        <h1 id="logo">Frame<span style="color: rgb(144, 18, 18);">Flix</span> </h1>
+        <div id="right-side">
+            <a href="#" id="toprated-link">Top⭐</a>
+            <a href="#" id="trending-link">Trending🔥</a>
+            <input type="text" id="search" placeholder="Search movies...🔍">
+        </div>
     </header>
-    
+
     <nav>
-        <button class="filter" data-genre="all">All</button>
-        <button class="filter" data-genre="action">Action</button>
-        <button class="filter" data-genre="comedy">Comedy</button>
-        <button class="filter" data-genre="sci-fi">Sci-Fi</button>
+
+        <button class="filter" data-genre="All">All</button>
+        <button class="filter" data-genre="Action">Action</button>
+        <button class="filter" data-genre="Comedy">Comedy</button>
+
+        <!-- Dropdown Filter -->
+        <select id="genre-select" class="filter">
+            <!-- <option value="all">All</option> -->
+            <!-- <option value="Action">Action</option> -->
+            <option value="Adventure">Adventure</option>
+            <option value="Animation">Animation</option>
+            <!-- <option value="Comedy">Comedy</option> -->
+            <option value="Crime">Crime</option>
+            <option value="Documentary">Documentary</option>
+            <option value="Drama">Drama</option>
+            <option value="Family">Family</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="History">History</option>
+            <option value="Horror">Horror</option>
+            <option value="Music">Music</option>
+            <option value="Mystery">Mystery</option>
+            <option value="Romance">Romance</option>
+            <option value="Science Fiction">Science Fiction</option>
+            <option value="TV Movie">TV Movie</option>
+            <option value="Thriller">Thriller</option>
+            <option value="War">War</option>
+            <option value="Western">Western</option>
+        </select>
+
     </nav>
-    
+
     <main id="movies">
         <!-- Movie items will be dynamically added here -->
     </main>
-    
+
     <script src="script.js"></script>
 </body>
 </html>

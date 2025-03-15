@@ -1,101 +1,226 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const movies = [
-    {
-      title: "Inception",
-      genre: "sci-fi",
-      poster: "images/inception.jpg",
-      description:
-        "Inception is a mind-bending science fiction thriller directed by Christopher Nolan. The film follows Dom Cobb, a skilled thief who specializes in stealing secrets from within the subconscious during the dream state. Cobb is offered a chance to have his criminal record erased if he can successfully plant an idea in a target's mind, a process known as 'inception.' As Cobb and his team delve deeper into the layers of dreams, they face increasingly complex challenges and must confront Cobb's own haunting past.",
-      trailer: "https://www.youtube.com/embed/YoHD9XEInc0",
-      rating: "8.8",
-      year: "2010",
-    },
-    {
-      title: "The Dark Knight",
-      genre: "action",
-      poster: "images/darknight.jpeg",
-      description:
-        "The Dark Knight, directed by Christopher Nolan, is the second installment in the Batman trilogy. The film follows Batman as he faces his greatest challenge yet: the Joker, a chaotic and anarchic criminal mastermind who seeks to plunge Gotham City into chaos. With the help of Lieutenant Jim Gordon and District Attorney Harvey Dent, Batman struggles to stop the Joker's reign of terror. The film explores themes of justice, morality, and the fine line between heroism and vigilantism.",
-      trailer: "https://www.youtube.com/embed/EXeTwQWrcwY",
-      rating: "9.0",
-      year: "2008",
-    },
-    {
-      title: "Interstellar",
-      genre: "sci-fi",
-      poster: "images/interstellar.jpeg",
-      description:
-        "Interstellar, directed by Christopher Nolan, is an epic science fiction film set in a future where Earth is becoming uninhabitable due to environmental collapse. A group of astronauts, led by former NASA pilot Cooper, embarks on a journey through a newly discovered wormhole near Saturn to find a new home for humanity. As they travel across galaxies, they must confront the vastness of space, the relativity of time, and the enduring power of love. The film combines stunning visuals with a deeply emotional narrative.",
-      trailer: "https://www.youtube.com/embed/zSWdZVtXT7E",
-      rating: "8.6",
-      year: "2014",
-    },
-    {
-      title: "Superbad",
-      genre: "comedy",
-      poster: "images/superbad.jpg",
-      description:
-        "Superbad is a raucous comedy directed by Greg Mottola and produced by Judd Apatow. The film follows two high school seniors, Seth and Evan, who are determined to have one last wild night before graduation. Their plan to buy alcohol for a party leads to a series of hilarious misadventures, including encounters with eccentric cops, fake IDs, and awkward romantic pursuits. The film is a coming-of-age story that captures the chaos and humor of teenage life.",
-      trailer: "https://www.youtube.com/embed/4eaZ_48ZYog",
-      rating: "7.6",
-      year: "2007",
-    },
-    {
-      title: "Avengers: Endgame",
-      genre: "action",
-      poster: "images/avengers.jpg",
-      description:
-        "Avengers: Endgame, directed by Anthony and Joe Russo, is the epic conclusion to the Marvel Cinematic Universe's Infinity Saga. After the devastating events of Avengers: Infinity War, the remaining Avengers must come together to undo Thanos' catastrophic snap, which wiped out half of all life in the universe. The film features a time-traveling mission, emotional reunions, and an ultimate showdown with Thanos. Endgame is a celebration of over a decade of Marvel films, delivering action, heart, and closure to beloved characters.",
-      trailer: "https://www.youtube.com/embed/TcMBFSGVi1c",
-      rating: "8.4",
-      year: "2019",
-    },
-  ];
-
   const movieContainer = document.getElementById("movies");
   const searchInput = document.getElementById("search");
   const filterButtons = document.querySelectorAll(".filter");
 
+  const API_KEY = process.env.TMDB_API_KEY;
+  const BASE_URL = "https://api.themoviedb.org/3";
+  const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"; // Movie poster base URL
+
+  let movies = [];
+  let genreMap = {};
+
+  // Fetch genres and store them in a map
+  async function fetchGenres() {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/genre/movie/list?api_key=${API_KEY}`
+      );
+      const data = await response.json();
+      genreMap = data.genres.reduce((map, genre) => {
+        map[genre.id] = genre.name;
+        return map;
+      }, {});
+    } catch (error) {
+      console.error("Error fetching genres:", error);
+    }
+  }
+
+  // Fetch popular movies from TMDB API
+  async function fetchPopularMovies() {
+    try {
+      await fetchGenres(); // Ensure genres are loaded first
+      const response = await fetch(
+        `${BASE_URL}/movie/popular?api_key=${API_KEY}`
+      );
+      const data = await response.json();
+      const movieResults = data.results;
+
+      const moviesWithDetails = await Promise.all(
+        movieResults.map(async (movie) => {
+          const trailerUrl = await fetchMovieTrailer(movie.id);
+          return {
+            title: movie.title,
+            genres: movie.genre_ids.map((id) => genreMap[id] || "Unknown"),
+            poster: `${IMAGE_BASE_URL}${movie.poster_path}`,
+            description: movie.overview,
+            trailer: trailerUrl,
+            rating: movie.vote_average.toFixed(1),
+            year: movie.release_date.split("-")[0],
+          };
+        })
+      );
+
+      movies = moviesWithDetails;
+      displayMovies(movies);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    }
+  }
+
+  // Fetch the actual movie trailer link from TMDB
+  async function fetchMovieTrailer(movieId) {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}`
+      );
+      const data = await response.json();
+      const trailers = data.results.filter(
+        (video) => video.type === "Trailer" && video.site === "YouTube"
+      );
+      return trailers.length > 0
+        ? `https://www.youtube.com/embed/${trailers[0].key}?autoplay=1&mute=1`
+        : "";
+    } catch (error) {
+      console.error("Error fetching trailer:", error);
+      return "";
+    }
+  }
+
+  // Fetch top-rated movies from TMDB API
+  async function fetchTopRatedMovies() {
+    try {
+      await fetchGenres(); // Ensure genres are loaded first
+      const response = await fetch(
+        `${BASE_URL}/movie/top_rated?api_key=${API_KEY}`
+      );
+      const data = await response.json();
+      const movieResults = data.results;
+
+      const moviesWithDetails = await Promise.all(
+        movieResults.map(async (movie) => {
+          const trailerUrl = await fetchMovieTrailer(movie.id);
+          return {
+            title: movie.title,
+            genres: movie.genre_ids.map((id) => genreMap[id] || "Unknown"),
+            poster: `${IMAGE_BASE_URL}${movie.poster_path}`,
+            description: movie.overview,
+            trailer: trailerUrl,
+            rating: movie.vote_average.toFixed(1),
+            year: movie.release_date.split("-")[0],
+          };
+        })
+      );
+
+      movies = moviesWithDetails;
+      displayMovies(movies);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    }
+  }
+
+  //fetch trending movies from TMDB API
+  async function fetchTrendingMovies() {
+    try {
+      await fetchGenres(); // Ensure genres are loaded first
+
+      const response = await fetch(
+        `${BASE_URL}/trending/movie/day?api_key=${API_KEY}`
+      );
+      const data = await response.json();
+      const movieResults = data.results;
+
+      const moviesWithDetails = await Promise.all(
+        movieResults.map(async (movie) => {
+          const trailerUrl = await fetchMovieTrailer(movie.id);
+          return {
+            title: movie.title,
+            genres: movie.genre_ids.map((id) => genreMap[id] || "Unknown"),
+            poster: `${IMAGE_BASE_URL}${movie.poster_path}`,
+            description: movie.overview,
+            trailer: trailerUrl,
+            rating: movie.vote_average.toFixed(1),
+            year: movie.release_date.split("-")[0],
+          };
+        })
+      );
+
+      movies = moviesWithDetails;
+      displayMovies(movies);
+    } catch (error) {
+      console.error("Error fetching Trending movies:", error);
+    }
+  }
+
+  // Display movies on the page
   function displayMovies(filteredMovies) {
     movieContainer.innerHTML = "";
+    if (filteredMovies.length === 0) {
+      movieContainer.innerHTML = `<p class="no-movies">No movies found.</p>`;
+      return;
+    }
     filteredMovies.forEach((movie, index) => {
       const movieElement = document.createElement("div");
       movieElement.classList.add("movie");
       movieElement.innerHTML = `
-        <div class="movie-card">
-          <img src="${movie.poster}" alt="${movie.title}" />
-          <h3>${movie.title}</h3>
-          <p>${movie.year} | ⭐ ${movie.rating}</p>
-        </div>
-      `;
+          <div class="movie-card">
+            <img src="${movie.poster}" alt="${movie.title}" />
+            <h3>${movie.title}</h3>
+            <p>${movie.year} | ⭐ ${movie.rating}</p>
+            <p class="genres">${movie.genres.join(", ")}</p>
+          </div>
+        `;
       movieElement.addEventListener("click", () => navigateToDetails(movie));
       movieContainer.appendChild(movieElement);
 
+      // Animation using GSAP
       gsap.from(movieElement, {
         opacity: 0,
-        y: 10,
+        y: 30,
         duration: 0.5,
         delay: 0.2 + index * 0.1,
       });
     });
   }
 
+  // Navigate to the movie details page
   function navigateToDetails(movie) {
     localStorage.setItem("selectedMovie", JSON.stringify(movie));
     window.location.href = "movie-details.html";
   }
 
+  // Display top-rated movies on click
+  document
+    .getElementById("toprated-link")
+    .addEventListener("click", (event) => {
+      event.preventDefault(); // Prevent default link behavior
+      fetchTopRatedMovies();
+    });
+
+  // Display trending movies on click
+  trendingLink = document.getElementById("trending-link");
+  trendingLink.addEventListener("click", (event) => {
+    event.preventDefault();
+    fetchTrendingMovies();
+  });
+
+  // Filter movies by genre
+  genreselect = document.getElementById("genre-select");
+  genreselect.addEventListener("change", () => {
+    const genre = genreselect.value.toLowerCase(); // Convert to lowercase
+    const filteredMovies =
+      genre === "all"
+        ? movies
+        : movies.filter((movie) =>
+            movie.genres.some((g) => g.toLowerCase() === genre)
+          ); // Case-insensitive comparison
+    displayMovies(filteredMovies);
+  });
+
   filterButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      const genre = button.getAttribute("data-genre");
+      const genre = button.getAttribute("data-genre").toLowerCase(); // Convert to lowercase
       const filteredMovies =
         genre === "all"
           ? movies
-          : movies.filter((movie) => movie.genre === genre);
+          : movies.filter((movie) =>
+              movie.genres.some((g) => g.toLowerCase() === genre)
+            ); // Case-insensitive comparison
       displayMovies(filteredMovies);
     });
   });
 
+  // Search movies by title
   searchInput.addEventListener("input", () => {
     const query = searchInput.value.toLowerCase();
     const filteredMovies = movies.filter((movie) =>
@@ -104,5 +229,6 @@ document.addEventListener("DOMContentLoaded", () => {
     displayMovies(filteredMovies);
   });
 
-  displayMovies(movies);
+  // Fetch movies on page load
+  fetchPopularMovies();
 });
