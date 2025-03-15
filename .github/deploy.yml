@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Change if using a different branch
+      - main  # Change this if you're using a different branch
 
 jobs:
   deploy:
@@ -15,6 +15,9 @@ jobs:
       - name: Inject API Key into config.js
         run: |
           echo "const API_KEY = '${{ secrets.TMDB_API_KEY }}';" > config.js
+
+      - name: Verify API Key Replacement
+        run: cat config.js  # Debugging: Check if replacement worked
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
