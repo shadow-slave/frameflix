@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let movies = [];
   let genreMap = {};
+  console.log("Hello from script.js");
 
   // Fetch genres and store them in a map
   async function fetchGenres() {
