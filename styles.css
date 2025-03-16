@@ -26,6 +26,15 @@ body {
   cursor: default;
   user-select: none;
 }
+header a{
+  color: white;
+  /* color: white; */
+  text-decoration: none;
+}
+header span{
+  letter-spacing: 1px;
+  font-size: 2rem;
+}
 
 header {
   background-color: #1f1f1f;
