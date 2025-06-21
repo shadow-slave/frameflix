@@ -1,5 +1,6 @@
 
 # 🎬 FrameFlix
+[Live Demo](https://shadow-slave.github.io/frameflix/index.html)
 
 FrameFlix is a sleek, responsive web application that fetches and displays movie data from [The Movie Database (TMDB) API](https://www.themoviedb.org/documentation/api).
 Users can view popular, top-rated, and trending movies, search by title, and filter by genre. Clicking on a movie reveals detailed information and an embedded trailer.
