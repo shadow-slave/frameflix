@@ -95,9 +95,12 @@ CDN:
 
 ## 🖼️ Screenshots
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ad941a95-49f7-41c7-9965-261cabfc698d" alt="Demo Image" width="150"/>
+</p>
+
 ![Screenshot 2025-06-22 002734](https://github.com/user-attachments/assets/2d621564-932b-4cd7-89e4-a0ba7fdabc23)
 ![Screenshot 2025-06-22 002812](https://github.com/user-attachments/assets/2114c053-41a5-4123-84cf-4fdc2b0b1463)
-![Screenshot 2025-06-21 200827](https://github.com/user-attachments/assets/ad941a95-49f7-41c7-9965-261cabfc698d)
 
 
 ---
@@ -112,7 +115,7 @@ CDN:
 
 ## 👥 Contributors
 
-* Aswin - [GitHub](https://github.com/shadow-slave)
+* Aswin TS - [GitHub](https://github.com/shadow-slave)
 
 ---
 
